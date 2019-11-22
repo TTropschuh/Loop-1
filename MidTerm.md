@@ -198,6 +198,46 @@ class Aim {
 }
 ```
 
+## Solving rotation with Math
+
+
+```javascript
+var angle= 0;
+
+function setup() {
+  createCanvas(500, 700);
+}
+
+function draw() {
+drawCircles(10, 100);
+
+}
+
+function drawCircles(numCircles,bigCirclediamter){
+  
+var middle = width/2;
+var numCircles = 10;
+var circleRadius = 5;
+var angle = Math.PI*2 / numCircles;
+  
+
+
+for(var i = 0; i < numCircles; i++){
+  
+
+    xCircle = middle + cos(angle*i) * bigCirclediamter;
+    yCircle = middle - sin(angle*i) * bigCirclediamter;
+  
+    ellipse(xCircle,yCircle, circleRadius*2, circleRadius*2);
+
+  
+}
+  
+
+}
+```
+
+
 ## Working "Play" Sketch 
 
 I managed to make a game with key inputs, a minus point and a pluspoint. I worked with classes and added a counter. So far so good.
