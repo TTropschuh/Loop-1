@@ -1,3 +1,237 @@
+## Midterm that works
+```javascript
+
+/*
+This game is called Wheely from Theresa Tropschuh
+Use the left, right, up and down keys to navigate with the player. 
+*/
+
+let player;
+let aim;
+let plusPoints = [];
+let minusPoints = [];
+let numPoints = 200;
+let TheFinish = false;
+
+
+function setup() {
+  createCanvas(700, 700);
+  player = new Player(width / 2, height / 9, 10, color("#FFA500"));
+  aim = new Aim(width / 2, height - 100, 50, color("#FFA500"));
+
+  for (let i = 0; i < numPoints; i++) {
+    plusPoints[i] = new points(random(width), random(height), 10, color("#008000"));
+    minusPoints[i] = new points(random(width), random(height), 10, color('red'));
+  }
+}
+
+function draw() {
+  background('#0059FF');
+  player.checkBounds();
+
+
+  for (let i = 0; i < plusPoints.length; i++) {
+    plusPoints[i].move();
+    plusPoints[i].draw();
+    minusPoints[i].move();
+    minusPoints[i].draw();
+
+    if (player.containsm(minusPoints[i])) {
+      player.eatPoison(minusPoints[i]);
+    }
+
+    if (player.containsp(plusPoints[i])) {
+      player.eatFood(plusPoints[i]);
+    }
+  }
+
+  if (player.containsAim(aim)) {
+    player.Finished(aim);
+    
+
+  }
+
+
+
+  player.draw();
+  aim.draw();
+
+
+  fill(255);
+  textSize(36);
+  let MyScore = text(player.score, 30, height - 40);
+  
+  if(TheFinish == true){
+  text('You Did it!', width / 2, height / 2);
+  }
+}
+
+function keyPressed() {
+  if (keyCode == LEFT_ARROW) {
+    player.moveLeft();
+  } else if (keyCode == RIGHT_ARROW) {
+    player.moveRight();
+  }
+
+  if (keyCode == UP_ARROW) {
+    player.moveUp();
+  } else if (keyCode == DOWN_ARROW) {
+    player.moveDown();
+  }
+}
+
+class Player {
+  constructor(x, y, r, c) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.c = c;
+    this.speed = 10;
+    this.score = 0;
+  }
+
+
+  moveUp() {
+    this.y -= this.speed;
+  }
+
+  moveDown() {
+    this.y += this.speed;
+  }
+
+  moveLeft() {
+    this.x -= this.speed;
+  }
+
+  moveRight() {
+    this.x += this.speed;
+  }
+
+
+  checkBounds() {
+    if (this.y < 0) {
+      this.y = 10;
+    }
+    if (this.y > height) {
+      this.y = height - 10;
+    }
+    if (this.x < 0) {
+      this.x = 10;
+    }
+    if (this.x > width) {
+      this.x = width - 10;
+    }
+  }
+
+  containsp(aFood) {
+    if (dist(this.x, this.y, aFood.x, aFood.y) < this.r / 2) {
+      return true;
+    } else {
+      return false;
+      print("I am false");
+    }
+  }
+
+  eatFood(aFood) {
+    aFood.eaten = true;
+    aFood.x = -1000;
+    aFood.y = -1000;
+    this.score = this.score + 1;
+  }
+
+  containsm(aPoison) {
+    if (dist(this.x, this.y, aPoison.x, aPoison.y) < this.r / 2) {
+      return true;
+    } else {
+      return false;
+      print("I am flase");
+    }
+  }
+
+  eatPoison(aPoison) {
+    aPoison.eaten = true;
+    aPoison.x = -1000;
+    aPoison.y = -1000;
+    this.score = this.score - 1;
+  }
+
+  containsAim(Goal) {
+    if (dist(this.x, this.y, Goal.x, Goal.y) < this.r / 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Finished(Goal) {
+    Goal.eaten = true;
+    TheFinish = true;
+    Goal.x = -1000;
+    Goal.y = -1000;
+  }
+
+  draw() {
+    noStroke();
+    fill(this.c);
+    ellipse(this.x, this.y, this.r, this.r);
+
+  }
+}
+
+
+class points {
+  constructor(x, y, r, c) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.c = c;
+    this.eaten = true;
+    this.numCircles = 100;
+  }
+
+  move() {
+    this.y = this.y - 1;
+    this.x = this.x + random(-1, 1);
+  }
+
+  draw() {
+    noStroke();
+    fill(this.c);
+    ellipse(this.x, this.y, this.r, this.r);
+
+
+
+  }
+
+  disappear() {
+    this.eaten = false;
+  }
+
+}
+
+class Aim {
+  constructor(x, y, r, c) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.c = c;
+  }
+
+
+
+  draw() {
+    noStroke();
+    fill(this.c);
+    ellipse(this.x, this.y, this.r, this.r);
+    fill('red')
+    textSize(8);
+    text('Come here!', this.x - this.r / 2.5, this.y);
+  }
+
+
+}
+```
+
 ## Midterm (But it doesn't work)
 ```javascript
 let player;
